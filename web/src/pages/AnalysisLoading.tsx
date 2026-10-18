@@ -225,7 +225,19 @@ const AnalysisLoading = () => {
             if (scoreError) {
               console.error("Score locations error:", scoreError);
             } else if (scoreData?.scores) {
-              scoringResults = scoreData.scores;
+              // Defensive: some cached rows can come back with JSONB array
+              // fields serialized as strings; normalize to real arrays so
+              // downstream .map()/.slice() calls never crash the whole flow.
+              const toArray = (v: any) => {
+                if (Array.isArray(v)) return v;
+                if (typeof v === "string") { try { const p = JSON.parse(v); return Array.isArray(p) ? p : []; } catch { return []; } }
+                return [];
+              };
+              scoringResults = scoreData.scores.map((s: any) => ({
+                ...s,
+                competitor_density: { ...s.competitor_density, competitors: toArray(s.competitor_density?.competitors) },
+                landmark_potential: { ...s.landmark_potential, landmarks: toArray(s.landmark_potential?.landmarks) },
+              }));
               console.log("[Scoring] Results:", scoringResults.map((s: any) => `${s.label}: ${s.total_score}`));
             }
 
