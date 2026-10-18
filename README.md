@@ -1,6 +1,10 @@
 # MarketIntel — Google Cloud Deployment
 
-AI-powered business location intelligence and retail lead generation, running on Google Cloud (Compute Engine VM) instead of Supabase. Built for the Google Cloud AI Builder Cup 2026 (Retail & Commerce track).
+AI-powered business location intelligence and retail lead generation, running on Google Cloud (Compute Engine VM) instead of Supabase. Submitted to the Google Cloud AI Builder Cup 2026 (Retail & Commerce track).
+
+## Project timeline — disclosure
+
+MarketIntel as a product (the React frontend, the location-intelligence wizard, pricing/blog pages, admin panel) predates this hackathon; it was originally built from April 2026 onward on Supabase + Lovable. What was built specifically during the hackathon window, and is what this repository documents, is the work under `api/`, `db/` and the `docker-compose.yml` orchestration: a full replatform of the backend off Supabase onto self-hosted Postgres + PostgREST + a Deno service on Google Compute Engine, switching the AI calls to Gemini directly, and the accompanying debugging/QA to get every feature working end-to-end against the new stack. We're disclosing this plainly rather than presenting the whole product as newly built for the event.
 
 ## Architecture
 
