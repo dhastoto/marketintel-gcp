@@ -422,6 +422,21 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON
   engine_parameters, food_business_ideas, commodity_prices
 TO marketintel_app;
 
+CREATE TABLE IF NOT EXISTS foodintel_results (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id UUID NOT NULL,
+  kabupaten_kota TEXT NOT NULL,
+  analysis_data JSONB NOT NULL,
+  credits_used INTEGER NOT NULL DEFAULT 1,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_foodintel_user ON foodintel_results (user_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_foodintel_kab ON foodintel_results (kabupaten_kota);
+ALTER TABLE foodintel_results ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "own_foodintel_select" ON foodintel_results FOR SELECT USING (user_id = app_current_user_id());
+CREATE POLICY "own_foodintel_insert" ON foodintel_results FOR INSERT WITH CHECK (user_id = app_current_user_id());
+GRANT SELECT, INSERT, UPDATE, DELETE ON foodintel_results TO marketintel_app;
+
 -- ============================================================
 -- RPC FUNCTIONS the frontend calls via supabase.rpc(...)
 -- ============================================================
