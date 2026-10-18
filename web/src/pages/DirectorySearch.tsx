@@ -7,7 +7,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
-import { useAdminRole } from "@/hooks/useAdminRole";
 import { detectProduct } from "@/lib/directory-bps-detector";
 import { PROVINCES, CITIES_BY_PROVINCE } from "@/lib/constants";
 import {
@@ -79,7 +78,6 @@ const MOCK_ROWS: Partial<DirectoryRow>[] = [
 
 export default function DirectorySearch() {
   const { user } = useAuth();
-  const { isAdmin } = useAdminRole();
 
   // Form state
   const [product, setProduct] = useState("");
@@ -106,17 +104,14 @@ export default function DirectorySearch() {
   const parsedKeywords = keywordsRaw.split("\n").map((s) => s.trim()).filter(Boolean);
 
   // Check paid access on mount / user change
+  // GCP demo build: user_purchases / payment gating is intentionally out of
+  // scope (see README) — every signed-in user gets full Directory Search
+  // access instead of silently falling back to locked when that table
+  // isn't found.
   useEffect(() => {
     if (!user) return;
-    if (isAdmin) { setHasPaidAccess(true); return; }
-    supabase
-      .from("user_purchases")
-      .select("id", { count: "exact", head: true })
-      .eq("user_id", user.id)
-      .eq("product_type", "directory")
-      .eq("status", "available")
-      .then(({ count }) => setHasPaidAccess((count ?? 0) > 0));
-  }, [user, isAdmin]);
+    setHasPaidAccess(true);
+  }, [user]);
 
   // Reset kabkota when province changes
   useEffect(() => { setSelectedKabkota([]); }, [province]);
