@@ -140,7 +140,10 @@ CREATE TABLE IF NOT EXISTS strategic_locations (
   innovations TEXT[],
   is_blind_spot BOOLEAN DEFAULT FALSE,
   blind_spot_reason TEXT,
-  rank INT
+  rank INT,
+  score_breakdown JSONB DEFAULT NULL,
+  location_criteria TEXT,
+  parking_ease TEXT
 );
 
 ALTER TABLE strategic_locations ENABLE ROW LEVEL SECURITY;
@@ -148,6 +151,81 @@ CREATE POLICY "own_locations_select" ON strategic_locations FOR SELECT USING (
   project_id IN (SELECT id FROM projects WHERE user_id = app_current_user_id())
 );
 CREATE POLICY "own_locations_insert" ON strategic_locations FOR INSERT WITH CHECK (
+  project_id IN (SELECT id FROM projects WHERE user_id = app_current_user_id())
+);
+CREATE POLICY "own_locations_update" ON strategic_locations FOR UPDATE USING (
+  project_id IN (SELECT id FROM projects WHERE user_id = app_current_user_id())
+);
+
+CREATE TABLE IF NOT EXISTS economic_results (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  project_id UUID REFERENCES projects(id) ON DELETE CASCADE NOT NULL,
+  district TEXT NOT NULL,
+  population_total INT,
+  village_count INT,
+  urban_village_count INT,
+  rural_village_count INT,
+  location_type TEXT,
+  city_expenditure_avg INT,
+  expenditure_level TEXT,
+  estimated_district_income INT,
+  mobility_rate NUMERIC(4,3),
+  capture_rate NUMERIC(4,3),
+  estimated_daily_customers INT,
+  base_price INT,
+  income_multiplier NUMERIC(3,2),
+  avg_transaction INT,
+  estimated_daily_revenue INT,
+  estimated_monthly_revenue INT,
+  recommended_price_min INT,
+  recommended_price_max INT,
+  pricing_strategy TEXT,
+  estimated_margin_pct NUMERIC(4,2),
+  estimated_monthly_cost INT,
+  estimated_monthly_profit INT,
+  initial_capital INT,
+  bep_days INT,
+  calculated_at TIMESTAMPTZ DEFAULT NOW()
+);
+ALTER TABLE economic_results ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "own_economic_select" ON economic_results FOR SELECT USING (
+  project_id IN (SELECT id FROM projects WHERE user_id = app_current_user_id())
+);
+CREATE POLICY "own_economic_insert" ON economic_results FOR INSERT WITH CHECK (
+  project_id IN (SELECT id FROM projects WHERE user_id = app_current_user_id())
+);
+CREATE POLICY "own_economic_delete" ON economic_results FOR DELETE USING (
+  project_id IN (SELECT id FROM projects WHERE user_id = app_current_user_id())
+);
+
+CREATE TABLE IF NOT EXISTS decision_results (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  project_id UUID REFERENCES projects(id) ON DELETE CASCADE NOT NULL,
+  district TEXT NOT NULL,
+  population_score NUMERIC(4,2),
+  traffic_score NUMERIC(4,2),
+  income_score NUMERIC(4,2),
+  competitor_gap_score NUMERIC(4,2),
+  density_score NUMERIC(4,2),
+  market_score NUMERIC(4,2),
+  decision TEXT,
+  decision_reason TEXT,
+  tradeoff_label TEXT,
+  tradeoff_detail TEXT,
+  insight_strength TEXT,
+  insight_weakness TEXT,
+  insight_recommendation TEXT,
+  insight_summary TEXT,
+  calculated_at TIMESTAMPTZ DEFAULT NOW()
+);
+ALTER TABLE decision_results ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "own_decision_select" ON decision_results FOR SELECT USING (
+  project_id IN (SELECT id FROM projects WHERE user_id = app_current_user_id())
+);
+CREATE POLICY "own_decision_insert" ON decision_results FOR INSERT WITH CHECK (
+  project_id IN (SELECT id FROM projects WHERE user_id = app_current_user_id())
+);
+CREATE POLICY "own_decision_delete" ON decision_results FOR DELETE USING (
   project_id IN (SELECT id FROM projects WHERE user_id = app_current_user_id())
 );
 
@@ -262,6 +340,25 @@ CREATE TABLE IF NOT EXISTS engine_parameters (
 ALTER TABLE engine_parameters ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "public_read_engine_params" ON engine_parameters FOR SELECT USING (true);
 
+CREATE TABLE IF NOT EXISTS commodity_prices (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  kode_wilayah TEXT,
+  provinsi TEXT,
+  kabupaten_kota TEXT,
+  kabupaten_kota_raw TEXT,
+  komoditas TEXT,
+  het NUMERIC,
+  harga_terkini NUMERIC,
+  harga_sebelumnya NUMERIC,
+  perubahan_pct NUMERIC,
+  tanggal_data DATE,
+  tanggal_sebelumnya DATE,
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+ALTER TABLE commodity_prices ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "public_read_commodity_prices" ON commodity_prices FOR SELECT USING (true);
+CREATE INDEX IF NOT EXISTS idx_commodity_prices_kabkota ON commodity_prices(kabupaten_kota, komoditas);
+
 CREATE TABLE IF NOT EXISTS food_business_ideas (
   id BIGINT PRIMARY KEY,
   kelompok TEXT,
@@ -311,6 +408,7 @@ GRANT USAGE ON SCHEMA public TO marketintel_app;
 GRANT SELECT, INSERT, UPDATE, DELETE ON
   profiles, projects, business_inputs, analysis_results,
   strategic_locations, location_scores_cache,
+  economic_results, decision_results,
   population_data, bps_food_data, bps_national_averages,
-  engine_parameters, food_business_ideas
+  engine_parameters, food_business_ideas, commodity_prices
 TO marketintel_app;
