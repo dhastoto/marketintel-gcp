@@ -112,7 +112,8 @@ CREATE TABLE IF NOT EXISTS analysis_results (
   section TEXT NOT NULL CHECK (section IN (
     'executive_summary', 'demographic_analysis', 'psychographic_analysis',
     'location_mapping', 'competitor_analysis', 'product_gap',
-    'action_plan', 'irresistible_offer'
+    'action_plan', 'irresistible_offer', '_metadata',
+    'location_reasoning', 'commute_flow', 'economic_v3_meta'
   )),
   content JSONB NOT NULL,
   generated_at TIMESTAMPTZ DEFAULT NOW()
