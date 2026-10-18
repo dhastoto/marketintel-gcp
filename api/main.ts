@@ -974,8 +974,8 @@ async function handleScoreLocations(req: Request): Promise<Response> {
         ) VALUES (
           ${projectId}, ${loc.label}, ${loc.district}, ${loc.latitude}, ${loc.longitude}, ${radiusMeters},
           ${density.score}, ${ratingGap.score}, ${traffic.score}, ${landmarks.score}, ${totalScore},
-          ${density.raw_count}, ${JSON.stringify(density.competitors)}, ${ratingGap.avg_rating},
-          ${landmarks.landmark_count}, ${JSON.stringify(landmarks.landmarks)}, ${traffic.traffic_generators}, ${traffic.congestion_ratio}, ${traffic.avg_review_volume},
+          ${density.raw_count}, ${tx.json(density.competitors)}, ${ratingGap.avg_rating},
+          ${landmarks.landmark_count}, ${tx.json(landmarks.landmarks)}, ${traffic.traffic_generators}, ${traffic.congestion_ratio}, ${traffic.avg_review_volume},
           ${querySignature}, 3, 0.04
         )
       `;
