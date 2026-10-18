@@ -551,7 +551,6 @@ const AnalysisLoading = () => {
           };
 
           await supabase.from("strategic_locations").insert({
-            id: crypto.randomUUID(),
             project_id: id!,
             location_name: loc.location_name,
             district: loc.district || input.districts[0],
@@ -583,7 +582,6 @@ const AnalysisLoading = () => {
           };
 
           await supabase.from("strategic_locations").insert({
-            id: crypto.randomUUID(),
             project_id: id!,
             location_name: loc.location_name,
             district: loc.district || input.districts[0],
