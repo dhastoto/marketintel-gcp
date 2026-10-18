@@ -1,0 +1,159 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 20% 96%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 222 47% 11%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 215 20% 93%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 38 92% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 38 92% 50%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 222 47% 11%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 38 92% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 217 33% 17%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217 33% 17%;
+    --sidebar-ring: 38 92% 50%;
+
+    /* Custom tokens */
+    --navy-900: 222 47% 11%;
+    --navy-800: 217 33% 17%;
+    --navy-700: 215 25% 27%;
+    --amber-500: 38 92% 50%;
+    --amber-600: 32 95% 44%;
+    --green-500: 142 71% 45%;
+    --green-900: 144 61% 20%;
+    --blue-500: 217 91% 60%;
+    --red-500: 0 84% 60%;
+  }
+
+  .dark {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+    --card: 217 33% 17%;
+    --card-foreground: 210 40% 98%;
+    --popover: 217 33% 17%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222 47% 11%;
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 38 92% 50%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 38 92% 50%;
+    --sidebar-background: 222 84% 5%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 38 92% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 217 33% 12%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217 33% 12%;
+    --sidebar-ring: 38 92% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Custom utility classes */
+@layer utilities {
+  .gradient-amber {
+    background: linear-gradient(135deg, hsl(38, 92%, 50%), hsl(25, 95%, 53%));
+  }
+
+  .gradient-navy-dark {
+    background: 
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(135deg, hsl(222, 47%, 11%), hsl(222, 84%, 5%));
+    background-size: 40px 40px, 40px 40px, 100% 100%;
+  }
+
+  .gradient-navy {
+    background: linear-gradient(135deg, hsl(217, 33%, 17%), hsl(222, 47%, 11%));
+  }
+
+  .text-gradient-amber {
+    background: linear-gradient(135deg, hsl(38, 92%, 50%), hsl(25, 95%, 53%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+}
+
+/* Blog prose table styling */
+.prose table {
+  @apply w-full border-collapse text-sm my-6;
+}
+.prose thead {
+  @apply bg-muted/50;
+}
+.prose th {
+  @apply border border-border px-3 py-2 text-left font-semibold text-foreground;
+}
+.prose td {
+  @apply border border-border px-3 py-2 text-muted-foreground;
+}
+.prose tbody tr:nth-child(even) {
+  @apply bg-muted/20;
+}
+.prose tbody tr:hover {
+  @apply bg-muted/40;
+}
+
+/* TipTap table editor styling */
+.ProseMirror table {
+  @apply w-full border-collapse my-4;
+}
+.ProseMirror th,
+.ProseMirror td {
+  @apply border border-border px-3 py-2 text-left min-w-[80px];
+}
+.ProseMirror th {
+  @apply bg-muted/50 font-semibold;
+}
+.ProseMirror .selectedCell {
+  @apply bg-accent/20;
+}

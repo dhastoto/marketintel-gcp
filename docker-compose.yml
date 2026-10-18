@@ -1,0 +1,61 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: marketintel
+      POSTGRES_USER: marketintel_admin
+      POSTGRES_PASSWORD: ${PG_ADMIN_PASSWORD}
+      APP_DB_PASSWORD: ${PG_APP_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db/schema.sql:/schema-template.sql:ro
+      - ./db/init.sh:/docker-entrypoint-initdb.d/01-init.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U marketintel_admin"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  postgrest:
+    image: postgrest/postgrest:v12.2.3
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PGRST_DB_URI: postgres://marketintel_app:${PG_APP_PASSWORD}@postgres:5432/marketintel
+      PGRST_DB_SCHEMA: public
+      PGRST_DB_ANON_ROLE: marketintel_app
+      PGRST_JWT_SECRET: ${JWT_SECRET}
+      PGRST_JWT_ROLE_CLAIM_KEY: ".role"
+
+  api:
+    build: ./api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://marketintel_app:${PG_APP_PASSWORD}@postgres:5432/marketintel
+      ADMIN_DATABASE_URL: postgres://marketintel_admin:${PG_ADMIN_PASSWORD}@postgres:5432/marketintel
+      JWT_SECRET: ${JWT_SECRET}
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+      GOOGLE_PLACES_API_KEY: ${GOOGLE_PLACES_API_KEY}
+      GOOGLE_MAPS_API_KEY: ${GOOGLE_MAPS_API_KEY}
+
+  web:
+    build:
+      context: ./web
+      args:
+        VITE_SUPABASE_URL: ${PUBLIC_URL}
+        VITE_SUPABASE_PUBLISHABLE_KEY: marketintel-local-anon-key
+    restart: unless-stopped
+    depends_on:
+      - postgrest
+      - api
+    ports:
+      - "80:80"
+
+volumes:
+  pgdata:
