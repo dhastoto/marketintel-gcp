@@ -74,20 +74,13 @@ export async function consumePurchase(
 /**
  * Ambil tier dari analisis tertentu (untuk render hasil).
  * Jika ada upgrade, ambil tier tertinggi yang ter-link ke analisis.
+ *
+ * GCP demo build: `user_purchases` / payment gating is intentionally out of
+ * scope (see README), so every report renders fully unlocked instead of
+ * silently falling back to 'free' when that table isn't found.
  */
 export async function getAnalysisTier(
-  analysisId: string
+  _analysisId: string
 ): Promise<string> {
-  const { data } = await supabase
-    .from('user_purchases')
-    .select('tier')
-    .eq('analysis_id', analysisId)
-    .eq('status', 'used');
-
-  if (!data || data.length === 0) return 'free';
-
-  const sorted = [...data].sort(
-    (a, b) => (TIER_RANK[b.tier] ?? 0) - (TIER_RANK[a.tier] ?? 0)
-  );
-  return sorted[0].tier;
+  return 'pro';
 }
