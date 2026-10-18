@@ -12,7 +12,7 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { toast } from "sonner";
-import { Search, Save, RotateCcw, Download, Settings2 } from "lucide-react";
+import { Search, Save, RotateCcw, Download, Settings2, CheckCircle, HelpCircle, AlertTriangle } from "lucide-react";
 
 interface EngineParam {
   id: string;
@@ -29,32 +29,32 @@ interface EngineParam {
 
 const CATEGORIES = [
   { value: "_all", label: "Semua Kategori" },
-  { value: "_global", label: "🌐 Global" },
-  { value: "makanan_minuman", label: "🍔 Makanan & Minuman" },
-  { value: "grocery", label: "🛒 Grocery" },
-  { value: "fashion", label: "👗 Fashion" },
-  { value: "elektronik", label: "📱 Elektronik" },
-  { value: "kecantikan", label: "💄 Kecantikan" },
-  { value: "kesehatan", label: "🏥 Kesehatan" },
-  { value: "otomotif", label: "🔧 Otomotif" },
-  { value: "pendidikan", label: "📚 Pendidikan" },
-  { value: "jasa", label: "🔨 Jasa" },
-  { value: "pertanian", label: "🌾 Pertanian" },
+  { value: "_global", label: "Global" },
+  { value: "makanan_minuman", label: "Makanan & Minuman" },
+  { value: "grocery", label: "Grocery" },
+  { value: "fashion", label: "Fashion" },
+  { value: "elektronik", label: "Elektronik" },
+  { value: "kecantikan", label: "Kecantikan" },
+  { value: "kesehatan", label: "Kesehatan" },
+  { value: "otomotif", label: "Otomotif" },
+  { value: "pendidikan", label: "Pendidikan" },
+  { value: "jasa", label: "Jasa" },
+  { value: "pertanian", label: "Pertanian" },
 ];
 
 const CONFIDENCE_OPTIONS = [
   { value: "_all", label: "Semua" },
-  { value: "empirical", label: "✅ Empirical" },
-  { value: "hybrid", label: "🟡 Hybrid" },
-  { value: "assumed", label: "⚠️ Assumed" },
+  { value: "empirical", label: "Empirical" },
+  { value: "hybrid", label: "Hybrid" },
+  { value: "assumed", label: "Assumed" },
 ];
 
 function ConfidenceBadge({ confidence }: { confidence: string | null }) {
   if (confidence === "empirical")
-    return <Badge variant="outline" className="bg-green-500/10 text-green-700 border-green-200 text-[10px]">✅ Empirical</Badge>;
+    return <Badge variant="outline" className="bg-green-500/10 text-green-700 border-green-200 text-[10px] flex items-center gap-1 w-fit"><CheckCircle className="h-2.5 w-2.5" /> Empirical</Badge>;
   if (confidence === "hybrid")
-    return <Badge variant="outline" className="bg-amber-500/10 text-amber-700 border-amber-200 text-[10px]">🟡 Hybrid</Badge>;
-  return <Badge variant="outline" className="bg-muted text-muted-foreground text-[10px]">⚠️ Assumed</Badge>;
+    return <Badge variant="outline" className="bg-amber-500/10 text-amber-700 border-amber-200 text-[10px] flex items-center gap-1 w-fit"><HelpCircle className="h-2.5 w-2.5" /> Hybrid</Badge>;
+  return <Badge variant="outline" className="bg-muted text-muted-foreground text-[10px] flex items-center gap-1 w-fit"><AlertTriangle className="h-2.5 w-2.5" /> Assumed</Badge>;
 }
 
 export default function AdminEngineParams() {
@@ -194,11 +194,11 @@ export default function AdminEngineParams() {
           <div className="text-sm font-bold text-white">{stats.lastUpdate ? new Date(stats.lastUpdate).toLocaleDateString("id-ID") : "-"}</div>
         </div>
         <div className="rounded-xl border border-slate-700 bg-slate-800/50 p-4">
-          <div className="text-xs text-slate-400">✅ Empirical</div>
+          <div className="text-xs text-slate-400 flex items-center gap-1"><CheckCircle className="h-3 w-3" /> Empirical</div>
           <div className="text-2xl font-bold text-green-400">{stats.empirical}</div>
         </div>
         <div className="rounded-xl border border-slate-700 bg-slate-800/50 p-4">
-          <div className="text-xs text-slate-400">⚠️ Assumed</div>
+          <div className="text-xs text-slate-400 flex items-center gap-1"><AlertTriangle className="h-3 w-3" /> Assumed</div>
           <div className="text-2xl font-bold text-amber-400">{stats.assumed}</div>
         </div>
       </div>

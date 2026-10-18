@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
 import { toast } from "sonner";
-import { ChevronLeft, ChevronRight, Rocket, Home, Store, Building, Factory, Check, Edit2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Rocket, Home, Store, Building, Factory, Check, Edit2, Wallet } from "lucide-react";
 import { PROVINCES, CITIES_BY_PROVINCE, DISTRICTS_BY_CITY, PRODUCT_CATEGORIES, TARGET_SEGMENTS } from "@/lib/constants";
 import { generateMockAnalysis } from "@/lib/mockAnalysis";
 import { QuickStartInput, type QuickStartResult } from "@/components/QuickStartInput";
@@ -334,7 +334,7 @@ const AnalysisWizard = () => {
               </div>
             </div>
             <div className="rounded-lg border border-accent/20 bg-accent/5 p-4 space-y-4">
-              <h3 className="text-sm font-semibold flex items-center gap-2">💰 Estimasi Ekonomi <Badge variant="secondary" className="text-[10px]">Opsional</Badge></h3>
+              <h3 className="text-sm font-semibold flex items-center gap-2"><Wallet className="h-4 w-4" /> Estimasi Ekonomi <Badge variant="secondary" className="text-[10px]">Opsional</Badge></h3>
               <p className="text-xs text-muted-foreground">Isi untuk mendapatkan estimasi profit dan BEP. Jika dikosongkan, kami gunakan benchmark industri.</p>
               <div>
                 <Label>Modal Awal (Rp)</Label>

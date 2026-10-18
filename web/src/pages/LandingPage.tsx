@@ -141,13 +141,13 @@ const LandingPage = () => {
               <p className="text-sm text-primary-foreground/60 mb-4">Temukan bisnis makanan paling potensial di kota Anda dari data 514 kab/kota dan 220+ komoditas.</p>
               <div className="space-y-2">
                 {[
-                  { name: "Ayam Geprek", badge: "🔥 Potensi Tinggi" },
-                  { name: "Coffee Shop", badge: "✅ Potensi Sedang" },
-                  { name: "Bakso Premium", badge: "✅ Potensi Sedang" },
+                  { name: "Ayam Geprek", badge: "Potensi Tinggi", icon: Flame },
+                  { name: "Coffee Shop", badge: "Potensi Sedang", icon: Check },
+                  { name: "Bakso Premium", badge: "Potensi Sedang", icon: Check },
                 ].map((item) => (
                   <div key={item.name} className="flex items-center justify-between rounded-lg bg-primary-foreground/10 px-3 py-2">
                     <span className="text-xs text-primary-foreground/70">{item.name}</span>
-                    <span className="text-[10px] text-amber-400">{item.badge}</span>
+                    <span className="flex items-center gap-1 text-[10px] text-amber-400"><item.icon className="h-3 w-3" /> {item.badge}</span>
                   </div>
                 ))}
               </div>

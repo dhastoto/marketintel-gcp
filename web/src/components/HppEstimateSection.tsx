@@ -149,12 +149,15 @@ export const HppEstimateSection = ({ productName, productCategory, cityApp, pric
               <p className={`font-semibold ${marginHealthy ? "text-green-700 dark:text-green-400" : margin > 0 ? "text-amber-700 dark:text-amber-400" : "text-red-700 dark:text-red-400"}`}>
                 Harga jual rata-rata: {fmtRp(avgPrice)} · Margin kotor: {fmtRp(margin)} ({marginPct.toFixed(0)}%)
               </p>
-              <p className="text-muted-foreground">
-                {marginHealthy
-                  ? "Margin sehat untuk F&B (target ideal ≥50% kotor untuk menutup operasional & profit)."
-                  : margin > 0
-                  ? "Margin di bawah target ideal F&B (50%). Pertimbangkan naikkan harga atau efisiensi bahan."
-                  : "⚠️ HPP melebihi harga jual! Cek ulang resep atau naikkan harga jual."}
+              <p className="text-muted-foreground flex items-start gap-1.5">
+                {!marginHealthy && margin <= 0 && <AlertCircle className="h-3.5 w-3.5 mt-0.5 shrink-0 text-red-500" />}
+                <span>
+                  {marginHealthy
+                    ? "Margin sehat untuk F&B (target ideal ≥50% kotor untuk menutup operasional & profit)."
+                    : margin > 0
+                    ? "Margin di bawah target ideal F&B (50%). Pertimbangkan naikkan harga atau efisiensi bahan."
+                    : "HPP melebihi harga jual! Cek ulang resep atau naikkan harga jual."}
+                </span>
               </p>
             </div>
           </div>

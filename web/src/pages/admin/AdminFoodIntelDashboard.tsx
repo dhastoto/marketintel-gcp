@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { BarChart3, Users, MapPin, TrendingUp } from "lucide-react";
+import { BarChart3, Users, MapPin, TrendingUp, Lightbulb } from "lucide-react";
 
 const AdminFoodIntelDashboard = () => {
   const [stats, setStats] = useState({ total: 0, uniqueUsers: 0, uniqueKab: 0, today: 0 });
@@ -47,7 +47,7 @@ const AdminFoodIntelDashboard = () => {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">💡 FoodIntel Dashboard</h1>
+      <h1 className="text-2xl font-bold flex items-center gap-2"><Lightbulb className="h-6 w-6" /> FoodIntel Dashboard</h1>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {statCards.map((s) => (

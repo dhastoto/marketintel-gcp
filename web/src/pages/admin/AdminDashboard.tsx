@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Users, Activity, CreditCard, TrendingUp, BarChart3, AlertTriangle, Info, Globe, Zap, Database, FlaskConical, RefreshCw, Clock, CheckCircle2, XCircle } from "lucide-react";
+import { Users, Activity, CreditCard, TrendingUp, BarChart3, AlertTriangle, Info, Globe, Zap, Database, FlaskConical, RefreshCw, Clock, CheckCircle2, XCircle, UserPlus, type LucideIcon } from "lucide-react";
 import { XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Area, AreaChart, Bar, BarChart } from "recharts";
 import { useMemo, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -97,15 +97,15 @@ export default function AdminDashboard() {
   }, [analysisRuns]);
 
   const activities = useMemo(() => {
-    const items: { icon: string; text: string; time: string }[] = [];
+    const items: { icon: LucideIcon; text: string; time: string }[] = [];
     recentUsers.forEach(u => items.push({
-      icon: '👤',
+      icon: UserPlus,
       text: `${u.full_name} mendaftar (${(u.plan || 'free').charAt(0).toUpperCase() + (u.plan || 'free').slice(1)} Plan)`,
       time: u.created_at || '',
     }));
     (transactions || []).slice(0, 5).forEach(t => {
-      if (t.transaction_type === 'topup') items.push({ icon: '💳', text: `${t.user_name} top-up ${t.amount} kredit`, time: t.created_at || '' });
-      if (t.transaction_type === 'usage') items.push({ icon: '📊', text: `${t.user_name} menggunakan 1 kredit analisis`, time: t.created_at || '' });
+      if (t.transaction_type === 'topup') items.push({ icon: CreditCard, text: `${t.user_name} top-up ${t.amount} kredit`, time: t.created_at || '' });
+      if (t.transaction_type === 'usage') items.push({ icon: BarChart3, text: `${t.user_name} menggunakan 1 kredit analisis`, time: t.created_at || '' });
     });
     return items.filter(a => a.time).sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime()).slice(0, 8);
   }, [recentUsers, transactions]);
@@ -411,7 +411,7 @@ export default function AdminDashboard() {
             <div className="space-y-3">
               {activities.map((a, i) => (
                 <div key={i} className="flex items-start gap-3">
-                  <span className="text-base mt-0.5">{a.icon}</span>
+                  <a.icon className="h-4 w-4 mt-0.5 text-slate-400 shrink-0" />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm text-slate-700">{a.text}</p>
                     <p className="text-[10px] text-slate-400">{timeAgo(a.time)}</p>

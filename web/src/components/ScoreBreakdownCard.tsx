@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { ScoreBreakdown } from '@/types/location-scoring';
-import { ChevronDown, ChevronUp, AlertTriangle, Info } from 'lucide-react';
+import { ChevronDown, ChevronUp, AlertTriangle, Info, Store, Star, Car, Landmark } from 'lucide-react';
 import { isMockScore } from '@/lib/scoring-fallback';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
@@ -11,10 +11,10 @@ interface ScoreBreakdownCardProps {
 }
 
 const METRICS = [
-  { key: 'competitor_density', icon: '🏪', label: 'Kepadatan Kompetitor', tooltip: 'Berapa banyak pesaing langsung di radius ini.' },
-  { key: 'rating_gap', icon: '⭐', label: 'Peluang dari Rating Kompetitor', tooltip: 'Semakin rendah rating rata-rata kompetitor, semakin besar peluang Anda untuk unggul.' },
-  { key: 'traffic_level', icon: '🚗', label: 'Tingkat Keramaian', tooltip: 'Berapa ramai area ini berdasarkan generator traffic (sekolah, kantor, transportasi).' },
-  { key: 'landmark_potential', icon: '🏛️', label: 'Daya Tarik Tempat Sekitar', tooltip: 'Seberapa banyak tempat ramai (mall, sekolah, kantor) yang menarik orang ke area ini.' },
+  { key: 'competitor_density', icon: Store, label: 'Kepadatan Kompetitor', tooltip: 'Berapa banyak pesaing langsung di radius ini.' },
+  { key: 'rating_gap', icon: Star, label: 'Peluang dari Rating Kompetitor', tooltip: 'Semakin rendah rating rata-rata kompetitor, semakin besar peluang Anda untuk unggul.' },
+  { key: 'traffic_level', icon: Car, label: 'Tingkat Keramaian', tooltip: 'Berapa ramai area ini berdasarkan generator traffic (sekolah, kantor, transportasi).' },
+  { key: 'landmark_potential', icon: Landmark, label: 'Daya Tarik Tempat Sekitar', tooltip: 'Seberapa banyak tempat ramai (mall, sekolah, kantor) yang menarik orang ke area ini.' },
 ] as const;
 
 function getScoreColor(score: number, max: number) {
@@ -68,7 +68,7 @@ export default function ScoreBreakdownCard({ location, district, breakdown }: Sc
       {/* Metric rows */}
       <TooltipProvider delayDuration={150}>
       <div className="space-y-3">
-        {METRICS.map(({ key, icon, label, tooltip }) => {
+        {METRICS.map(({ key, icon: Icon, label, tooltip }) => {
           const metricData = breakdown[key];
           const score = metricData.score;
           const pct = (score / 2.5) * 100;
@@ -81,7 +81,7 @@ export default function ScoreBreakdownCard({ location, district, breakdown }: Sc
                 className="w-full text-left group"
               >
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-sm">{icon}</span>
+                  <Icon className="h-4 w-4 text-muted-foreground shrink-0" />
                   <span className="text-sm font-medium text-foreground flex items-center gap-1 flex-1">
                     {label}
                     <Tooltip>

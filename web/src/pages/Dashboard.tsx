@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { PlusCircle, FolderOpen, CheckCircle2, MapPin, TrendingUp, FileText } from "lucide-react";
+import { PlusCircle, FolderOpen, CheckCircle2, MapPin, TrendingUp, FileText, Search, Lightbulb, PartyPopper } from "lucide-react";
 
 interface Project {
   id: string;
@@ -112,7 +112,7 @@ const Dashboard = () => {
     <div className="animate-fade-in-up space-y-6">
       {/* Welcome */}
       <div>
-        <h1 className="text-2xl font-bold">Selamat datang, {profile?.full_name?.split(" ")[0]}! 👋</h1>
+        <h1 className="text-2xl font-bold flex items-center gap-2">Selamat datang, {profile?.full_name?.split(" ")[0]}! <PartyPopper className="h-5 w-5 text-accent" /></h1>
         <p className="text-muted-foreground">Berikut ringkasan proyek analisis Anda.</p>
       </div>
 
@@ -124,7 +124,7 @@ const Dashboard = () => {
             to="/app/analysis/new"
             className="rounded-xl border-2 border-border hover:border-accent p-5 transition-all hover:shadow-md group"
           >
-            <div className="text-2xl mb-2">🔍</div>
+            <Search className="h-6 w-6 mb-2 text-accent" />
             <h3 className="font-semibold mb-1 group-hover:text-accent transition-colors">Sudah Punya Ide?</h3>
             <p className="text-sm text-muted-foreground mb-3">"Analisis lokasi bisnis saya di kecamatan X"</p>
             <Button size="sm" className="gradient-amber border-0 text-accent-foreground hover:opacity-90">
@@ -135,7 +135,7 @@ const Dashboard = () => {
             to="/app/food-opportunity"
             className="rounded-xl border-2 border-border hover:border-green-500 p-5 transition-all hover:shadow-md group"
           >
-            <div className="text-2xl mb-2">💡</div>
+            <Lightbulb className="h-6 w-6 mb-2 text-green-500" />
             <h3 className="font-semibold mb-1 group-hover:text-green-500 transition-colors">
               Belum Tahu Mau Jual Apa?
             </h3>

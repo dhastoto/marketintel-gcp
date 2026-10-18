@@ -486,7 +486,7 @@ const AnalysisDashboard = () => {
               </div>
 
               <div className="rounded-xl border bg-card p-5">
-                <h3 className="mb-3 font-semibold">🚨 Aksi Prioritas Hari Ini</h3>
+                <h3 className="mb-3 font-semibold flex items-center gap-2"><AlertTriangle className="h-4 w-4 text-amber-500" /> Aksi Prioritas Hari Ini</h3>
                 <div className="space-y-2">
                   {exec.urgent_actions?.map((action: string, i: number) => (
                     <button key={i} onClick={() => toggleAction(i)} className="flex w-full items-center gap-3 rounded-lg p-2 text-left text-sm transition-colors hover:bg-muted/50">
@@ -498,7 +498,7 @@ const AnalysisDashboard = () => {
               </div>
 
               <div className="rounded-xl border bg-card p-5">
-                <h3 className="mb-3 font-semibold">📍 Skor Lokasi Strategis</h3>
+                <h3 className="mb-3 font-semibold flex items-center gap-2"><MapPin className="h-4 w-4 text-blue-500" /> Skor Lokasi Strategis</h3>
                 <div className="space-y-3">
                   {strategicLocations.map((loc) => (
                     <div key={loc.id} className="flex items-center gap-3">
@@ -507,7 +507,7 @@ const AnalysisDashboard = () => {
                         <div className="flex justify-between text-sm">
                           <span className="font-medium">{loc.location_name}</span>
                           <div className="flex items-center gap-2">
-                            <button onClick={() => openGoogleMaps(loc)} className="text-xs text-blue-500 hover:underline" title="Buka di Google Maps">📍</button>
+                            <button onClick={() => openGoogleMaps(loc)} className="text-blue-500 hover:underline" title="Buka di Google Maps"><MapPin className="h-3.5 w-3.5" /></button>
                             <span className={`font-bold ${scoreColor(loc.score || 0)}`}>{loc.score}</span>
                           </div>
                         </div>
@@ -583,7 +583,7 @@ const AnalysisDashboard = () => {
 
           {offer && (
             <div className="gradient-navy rounded-xl p-5">
-              <h3 className="mb-4 font-semibold text-amber-500">🔥 Penawaran Tak Tertolak</h3>
+              <h3 className="mb-4 font-semibold text-amber-500 flex items-center gap-2"><Zap className="h-4 w-4" /> Penawaran Tak Tertolak</h3>
               <div className="mb-4 rounded-lg bg-primary-foreground/5 p-4">
                 <p className="mb-2 text-xs font-semibold uppercase text-primary-foreground/50">Versi Spanduk</p>
                 <p className="text-lg font-bold text-primary-foreground">{offer.banner}</p>
@@ -745,7 +745,7 @@ const AnalysisDashboard = () => {
                     <div className="rounded-lg bg-green-500/5 p-3">
                       <h4 className="mb-2 flex items-center gap-1.5 text-sm font-semibold text-green-500"><CheckCircle2 className="h-4 w-4" /> Inovasi Saya untuk Menang</h4>
                       <ul className="space-y-1.5">
-                        {loc.innovations?.map((inn: string, i: number) => <li key={i} className="text-sm">✅ {inn}</li>)}
+                        {loc.innovations?.map((inn: string, i: number) => <li key={i} className="flex items-start gap-1.5 text-sm"><CheckCircle2 className="h-3.5 w-3.5 mt-0.5 shrink-0 text-green-500" /> {inn}</li>)}
                       </ul>
                     </div>
                   </div>

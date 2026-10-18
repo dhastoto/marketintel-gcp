@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { ArrowLeft, Scale, PlusCircle, Trophy } from "lucide-react";
+import { ArrowLeft, Scale, PlusCircle, Trophy, Lightbulb } from "lucide-react";
 import { toast } from "sonner";
 
 interface CompareItem {
@@ -382,14 +382,16 @@ const CompareLocations = () => {
 
             {comparisonData.length >= 2 && (
               <div className="rounded-lg border border-primary/20 bg-primary/5 p-4">
-                <p className="text-sm">
-                  <span className="font-semibold">💡 Rekomendasi: </span>
+                <p className="text-sm flex items-start gap-1.5">
+                  <Lightbulb className="h-4 w-4 mt-0.5 shrink-0" />
+                  <span><span className="font-semibold">Rekomendasi: </span>
                   {comparisonData[0].district} adalah lokasi paling potensial dengan market score tertinggi (
                   {Number(comparisonData[0].market_score || 0).toFixed(1)}/10)
                   {comparisonData[0].decision === "GO" && " dan keputusan GO"}.
                   {comparisonData[0].omzet_moderat && comparisonData[1].omzet_moderat && comparisonData[0].omzet_moderat > comparisonData[1].omzet_moderat && (
                     <> Estimasi omzet {Math.round(((comparisonData[0].omzet_moderat - comparisonData[1].omzet_moderat) / comparisonData[1].omzet_moderat) * 100)}% lebih tinggi dari {comparisonData[1].district}.</>
                   )}
+                  </span>
                 </p>
               </div>
             )}

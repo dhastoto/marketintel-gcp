@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { TrendingUp, Users, DollarSign, Tag, Calculator, AlertTriangle, Info, MapPin, CheckCircle } from "lucide-react";
+import { TrendingUp, Users, DollarSign, Tag, Calculator, AlertTriangle, Info, MapPin, CheckCircle, XCircle, Car, Store, Building2, Lightbulb, Zap, Target, BarChart3, LineChart, type LucideIcon } from "lucide-react";
 import type { PlanFeatures } from "@/lib/feature-gate";
 import { UpgradeTeaser } from "@/components/UpgradeTeaser";
 
@@ -168,7 +168,7 @@ function ConfidenceBadge({ topDown, bottomUp }: { topDown: number | null; bottom
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <Badge variant="outline" className={`text-[10px] ${color} cursor-help`}>📊 Tingkat Keyakinan: {level}</Badge>
+        <Badge variant="outline" className={`text-[10px] ${color} cursor-help flex items-center gap-1 w-fit`}><BarChart3 className="h-3 w-3" /> Tingkat Keyakinan: {level}</Badge>
       </TooltipTrigger>
       <TooltipContent><p className="max-w-[220px] text-xs">{tooltip}</p></TooltipContent>
     </Tooltip>
@@ -176,9 +176,9 @@ function ConfidenceBadge({ topDown, bottomUp }: { topDown: number | null; bottom
 }
 
 function DataSourceBadge({ type }: { type: 'real' | 'hybrid' | 'assumed' }) {
-  if (type === 'real') return <Badge variant="outline" className="text-[9px] bg-green-500/10 text-green-700 border-green-200 dark:text-green-400">✅ Data riil</Badge>;
-  if (type === 'hybrid') return <Badge variant="outline" className="text-[9px] bg-amber-500/10 text-amber-700 border-amber-200 dark:text-amber-400">🟡 Estimasi Gabungan</Badge>;
-  return <Badge variant="outline" className="text-[9px] bg-muted text-muted-foreground">⚠️ Estimasi</Badge>;
+  if (type === 'real') return <Badge variant="outline" className="text-[9px] bg-green-500/10 text-green-700 border-green-200 dark:text-green-400 flex items-center gap-1 w-fit"><CheckCircle className="h-3 w-3" /> Data riil</Badge>;
+  if (type === 'hybrid') return <Badge variant="outline" className="text-[9px] bg-amber-500/10 text-amber-700 border-amber-200 dark:text-amber-400 flex items-center gap-1 w-fit"><Info className="h-3 w-3" /> Estimasi Gabungan</Badge>;
+  return <Badge variant="outline" className="text-[9px] bg-muted text-muted-foreground flex items-center gap-1 w-fit"><AlertTriangle className="h-3 w-3" /> Estimasi</Badge>;
 }
 
 function Disclaimer() {
@@ -187,7 +187,7 @@ function Disclaimer() {
       <div className="flex items-start gap-2">
         <Info className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" />
         <div className="text-[11px] text-muted-foreground space-y-1">
-          <p className="font-medium">⚠️ Disclaimer</p>
+          <p className="font-medium flex items-center gap-1.5"><AlertTriangle className="h-3.5 w-3.5" /> Disclaimer</p>
           <p>Semua angka bersifat estimasi berdasarkan data publik BPS dan Google Maps. Bukan jaminan finansial.</p>
           <p>Sumber data: BPS Susenas 2024, Google Places API.</p>
         </div>
@@ -197,18 +197,18 @@ function Disclaimer() {
 }
 
 function DecisionBadge({ decision }: { decision: string | null }) {
-  if (decision === "GO") return <Badge className="bg-green-500 text-white text-lg px-4 py-1">REKOMENDASI: JALANKAN ✅</Badge>;
-  if (decision === "CONDITIONAL") return <Badge className="bg-amber-500 text-white text-lg px-4 py-1">PERLU STRATEGI ⚠️</Badge>;
-  return <Badge className="bg-red-500 text-white text-lg px-4 py-1">TIDAK DIREKOMENDASIKAN ❌</Badge>;
+  if (decision === "GO") return <Badge className="bg-green-500 text-white text-lg px-4 py-1 flex items-center gap-2 w-fit"><CheckCircle className="h-5 w-5" /> REKOMENDASI: JALANKAN</Badge>;
+  if (decision === "CONDITIONAL") return <Badge className="bg-amber-500 text-white text-lg px-4 py-1 flex items-center gap-2 w-fit"><AlertTriangle className="h-5 w-5" /> PERLU STRATEGI</Badge>;
+  return <Badge className="bg-red-500 text-white text-lg px-4 py-1 flex items-center gap-2 w-fit"><XCircle className="h-5 w-5" /> TIDAK DIREKOMENDASIKAN</Badge>;
 }
 
-function MetricBar({ label, score, icon }: { label: string; score: number | null; icon: string }) {
+function MetricBar({ label, score, icon: Icon }: { label: string; score: number | null; icon: LucideIcon }) {
   const s = Number(score) || 0;
   const color = s >= 7 ? "bg-green-500" : s >= 5 ? "bg-amber-500" : "bg-red-500";
   return (
     <div className="space-y-1">
       <div className="flex justify-between text-sm">
-        <span>{icon} {label}</span>
+        <span className="flex items-center gap-1.5"><Icon className="h-3.5 w-3.5" /> {label}</span>
         <span className="font-bold">{s.toFixed(1)}/10</span>
       </div>
       <div className="h-2.5 rounded-full bg-muted">
@@ -265,7 +265,7 @@ function SanityWarning({ meta }: { meta?: EconomicV3Meta }) {
         {si.wasCapped ? <AlertTriangle className="h-4 w-4 text-amber-600 mt-0.5 shrink-0" /> : <Info className="h-4 w-4 text-blue-600 mt-0.5 shrink-0" />}
         <div>
           <p className={`text-sm font-medium ${si.wasCapped ? 'text-amber-800 dark:text-amber-300' : 'text-blue-800 dark:text-blue-300'}`}>
-            {si.wasCapped ? '⚠️ Estimasi di-cap ke benchmark skala bisnis' : 'ℹ️ Estimasi dinaikkan ke minimum viable'}
+            {si.wasCapped ? 'Estimasi di-cap ke benchmark skala bisnis' : 'Estimasi dinaikkan ke minimum viable'}
           </p>
           <p className={`text-xs mt-1 ${si.wasCapped ? 'text-amber-700 dark:text-amber-400' : 'text-blue-700 dark:text-blue-400'}`}>
             {si.warningMessage}
@@ -288,8 +288,8 @@ function CapacityBadge({ meta }: { meta?: EconomicV3Meta }) {
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <Badge variant="outline" className="text-[10px] bg-amber-500/10 text-amber-700 border-amber-200 dark:text-amber-400 dark:border-amber-800 cursor-help">
-          ⚠️ Dibatasi kapasitas: maksimal {ci.capacityCap} pelanggan/hari (sesuai skala usaha {scaleLabels[scale] || scale})
+        <Badge variant="outline" className="text-[10px] bg-amber-500/10 text-amber-700 border-amber-200 dark:text-amber-400 dark:border-amber-800 cursor-help flex items-center gap-1 w-fit">
+          <AlertTriangle className="h-3 w-3 shrink-0" /> Dibatasi kapasitas: maksimal {ci.capacityCap} pelanggan/hari (sesuai skala usaha {scaleLabels[scale] || scale})
         </Badge>
       </TooltipTrigger>
       <TooltipContent>
@@ -480,11 +480,11 @@ export function EconomicPotentialTab({
                 <TrendingUp className="h-4 w-4 text-accent" /> Skor Potensi Pasar: {Number(dec.market_score).toFixed(1)}/10
               </h3>
               <div className="space-y-3">
-                <MetricBar label="Populasi (30%)" score={dec.population_score} icon="👥" />
-                <MetricBar label="Lalu Lintas (25%)" score={dec.traffic_score} icon="🚗" />
-                <MetricBar label="Daya Beli (15%)" score={dec.income_score} icon="💰" />
-                <MetricBar label="Celah Kompetitor (15%)" score={dec.competitor_gap_score} icon="🏪" />
-                <MetricBar label="Kepadatan Penduduk (15%)" score={dec.density_score} icon="🏘️" />
+                <MetricBar label="Populasi (30%)" score={dec.population_score} icon={Users} />
+                <MetricBar label="Lalu Lintas (25%)" score={dec.traffic_score} icon={Car} />
+                <MetricBar label="Daya Beli (15%)" score={dec.income_score} icon={DollarSign} />
+                <MetricBar label="Celah Kompetitor (15%)" score={dec.competitor_gap_score} icon={Store} />
+                <MetricBar label="Kepadatan Penduduk (15%)" score={dec.density_score} icon={Building2} />
               </div>
             </div>
           )}
@@ -558,7 +558,7 @@ export function EconomicPotentialTab({
                   </div>
                   <div className="text-lg font-bold text-green-600">{fmt(eco.estimated_daily_customers)} orang</div>
                   {v3Meta?.capacity_info?.isCapacityCapped && (
-                    <div className="text-[10px] text-amber-600">⚠️ Dibatasi dari estimasi awal {v3Meta.capacity_info.rawCustomers}</div>
+                    <div className="text-[10px] text-amber-600 flex items-center gap-1"><AlertTriangle className="h-3 w-3" /> Dibatasi dari estimasi awal {v3Meta.capacity_info.rawCustomers}</div>
                   )}
                 </div>
               </div>
@@ -629,8 +629,8 @@ export function EconomicPotentialTab({
                     <div className="flex items-start gap-2">
                       <Info className="h-4 w-4 text-blue-600 mt-0.5 shrink-0" />
                       <div className="space-y-1">
-                        <p className="text-sm font-semibold text-blue-800 dark:text-blue-300">
-                          ℹ️ Modal Menggunakan Estimasi Benchmark
+                        <p className="text-sm font-semibold text-blue-800 dark:text-blue-300 flex items-center gap-1.5">
+                          <Info className="h-3.5 w-3.5" /> Modal Menggunakan Estimasi Benchmark
                         </p>
                         <p className="text-xs text-blue-700 dark:text-blue-400">
                           Anda tidak mengisi modal awal. Semua perhitungan (BEP, working capital, profit) menggunakan <strong>benchmark industri skala {v3Meta.business_scale}</strong>: Rp {(v3Meta.capex_check.benchmark.capex_min/1_000_000).toFixed(0)} – {(v3Meta.capex_check.benchmark.capex_max/1_000_000).toFixed(0)} juta (estimasi yang dipakai: <strong>{fmtRpShort(v3Meta.capital_effective)}</strong>).
@@ -640,8 +640,8 @@ export function EconomicPotentialTab({
                             <strong>Komponen modal:</strong> {v3Meta.capex_check.benchmark.capex_items}
                           </p>
                         )}
-                        <p className="text-[11px] text-blue-700 dark:text-blue-400 mt-1.5">
-                          💡 Isi field "Modal Awal" di wizard untuk perhitungan yang sesuai kondisi Anda.
+                        <p className="text-[11px] text-blue-700 dark:text-blue-400 mt-1.5 flex items-start gap-1.5">
+                          <Lightbulb className="h-3 w-3 mt-0.5 shrink-0" /> Isi field "Modal Awal" di wizard untuk perhitungan yang sesuai kondisi Anda.
                         </p>
                       </div>
                     </div>
@@ -652,8 +652,8 @@ export function EconomicPotentialTab({
                     <div className="flex items-start gap-2">
                       <AlertTriangle className="h-4 w-4 text-amber-600 mt-0.5 shrink-0" />
                       <div className="space-y-1">
-                        <p className="text-sm font-semibold text-amber-800 dark:text-amber-300">
-                          ⚠️ Modal di Bawah Benchmark
+                        <p className="text-sm font-semibold text-amber-800 dark:text-amber-300 flex items-center gap-1.5">
+                          <AlertTriangle className="h-3.5 w-3.5" /> Modal di Bawah Benchmark
                         </p>
                         <p className="text-xs text-amber-700 dark:text-amber-400">
                           Modal Anda: <strong>{fmtRpShort(v3Meta.capital_user_input)}</strong> · Benchmark skala {v3Meta.business_scale}: <strong>Rp {(v3Meta.capex_check.benchmark.capex_min/1_000_000).toFixed(0)} – {(v3Meta.capex_check.benchmark.capex_max/1_000_000).toFixed(0)} juta</strong>
@@ -664,8 +664,8 @@ export function EconomicPotentialTab({
                             <strong>Komponen modal:</strong> {v3Meta.capex_check.benchmark.capex_items}
                           </p>
                         )}
-                        <p className="text-[11px] font-medium text-amber-800 dark:text-amber-300 mt-1.5">
-                          💡 Saran: Pertimbangkan skala lebih kecil (rumahan / gerobak) atau tambah modal sebelum memulai.
+                        <p className="text-[11px] font-medium text-amber-800 dark:text-amber-300 mt-1.5 flex items-start gap-1.5">
+                          <Lightbulb className="h-3 w-3 mt-0.5 shrink-0" /> Saran: Pertimbangkan skala lebih kecil (rumahan / gerobak) atau tambah modal sebelum memulai.
                         </p>
                       </div>
                     </div>
@@ -692,8 +692,8 @@ export function EconomicPotentialTab({
                       <div>
                         <p className={`text-sm font-medium ${v3Meta.working_capital.isCapitalAdequate ? 'text-green-700 dark:text-green-400' : 'text-amber-700 dark:text-amber-400'}`}>
                           {v3Meta.working_capital.isCapitalAdequate
-                            ? `✅ Modal ${fmtRpShort(eco.initial_capital)} cukup untuk ${fmt(eco.estimated_daily_customers)} porsi/hari (cadangan ${v3Meta.working_capital.bufferDays} hari)`
-                            : `⚠️ Modal ${fmtRpShort(eco.initial_capital)} hanya cukup untuk ${fmt(v3Meta.working_capital.affordableCustomersPerDay)} porsi/hari`}
+                            ? `Modal ${fmtRpShort(eco.initial_capital)} cukup untuk ${fmt(eco.estimated_daily_customers)} porsi/hari (cadangan ${v3Meta.working_capital.bufferDays} hari)`
+                            : `Modal ${fmtRpShort(eco.initial_capital)} hanya cukup untuk ${fmt(v3Meta.working_capital.affordableCustomersPerDay)} porsi/hari`}
                         </p>
                         {!v3Meta.working_capital.isCapitalAdequate && (
                           <p className="text-xs text-amber-600 dark:text-amber-500 mt-1">
@@ -759,8 +759,8 @@ export function EconomicPotentialTab({
                             </div>
                           </div>
                         </div>
-                        <p className="text-[11px] text-muted-foreground mt-3 leading-relaxed">
-                          💡 Pasar potensial sama — bedanya hanya di modal kerja. Dengan modal {fmtRpShort(benchmarkMidCapex)}, Anda bisa beli bahan baku untuk melayani semua {fmt(eco.estimated_daily_customers)} customer harian. Dengan modal {fmtRpShort(v3Meta.capital_user_input)}, Anda hanya mampu produksi {fmt(wc.affordableCustomersPerDay)} porsi/hari sehingga revenue terbatas dan opex tetap (sewa, gaji) bikin rugi.
+                        <p className="text-[11px] text-muted-foreground mt-3 leading-relaxed flex items-start gap-1.5">
+                          <Lightbulb className="h-3 w-3 mt-0.5 shrink-0" /> Pasar potensial sama — bedanya hanya di modal kerja. Dengan modal {fmtRpShort(benchmarkMidCapex)}, Anda bisa beli bahan baku untuk melayani semua {fmt(eco.estimated_daily_customers)} customer harian. Dengan modal {fmtRpShort(v3Meta.capital_user_input)}, Anda hanya mampu produksi {fmt(wc.affordableCustomersPerDay)} porsi/hari sehingga revenue terbatas dan opex tetap (sewa, gaji) bikin rugi.
                         </p>
                       </div>
                     );
@@ -774,12 +774,14 @@ export function EconomicPotentialTab({
                     {/* CRITICAL: Explain mismatch when revenue here ≠ revenue at top */}
                     {v3Meta?.working_capital && !v3Meta.working_capital.isCapitalAdequate && (
                       <div className="mb-3 rounded-md border border-amber-300 bg-amber-50 dark:border-amber-700 dark:bg-amber-950/30 p-2.5">
-                        <p className="text-[11px] text-amber-800 dark:text-amber-300 leading-relaxed">
-                          <strong>⚠️ Catatan penting:</strong> Omzet di bawah ({fmtRpShort(v3Meta.profit_benchmark.adjustedMonthlyRevenue)}) bukan potensi pasar penuh, tapi omzet maksimum yang <strong>bisa Anda jalankan dengan modal {fmtRpShort(eco.initial_capital)}</strong> (hanya {fmt(v3Meta.working_capital.affordableCustomersPerDay)} porsi/hari, bukan {fmt(eco.estimated_daily_customers)} porsi).
-                          Pasarnya potensial — masalahnya modal tidak cukup beli bahan baku untuk melayani semua pelanggan.
+                        <p className="text-[11px] text-amber-800 dark:text-amber-300 leading-relaxed flex items-start gap-1.5">
+                          <AlertTriangle className="h-3 w-3 mt-0.5 shrink-0" />
+                          <span><strong>Catatan penting:</strong> Omzet di bawah ({fmtRpShort(v3Meta.profit_benchmark.adjustedMonthlyRevenue)}) bukan potensi pasar penuh, tapi omzet maksimum yang <strong>bisa Anda jalankan dengan modal {fmtRpShort(eco.initial_capital)}</strong> (hanya {fmt(v3Meta.working_capital.affordableCustomersPerDay)} porsi/hari, bukan {fmt(eco.estimated_daily_customers)} porsi).
+                          Pasarnya potensial — masalahnya modal tidak cukup beli bahan baku untuk melayani semua pelanggan.</span>
                         </p>
-                        <p className="text-[11px] text-amber-700 dark:text-amber-400 mt-1.5">
-                          💡 <strong>Skenario dengan modal cukup ({fmtRpShort(v3Meta.working_capital.workingCapitalNeeded)}):</strong> omzet ~{fmtRpShort(eco.estimated_monthly_revenue)}/bulan, laba potensial ~{fmtRpShort(Math.round((eco.estimated_monthly_revenue || 0) * v3Meta.profit_benchmark.benchmarkNetMargin))}/bulan.
+                        <p className="text-[11px] text-amber-700 dark:text-amber-400 mt-1.5 flex items-start gap-1.5">
+                          <Lightbulb className="h-3 w-3 mt-0.5 shrink-0" />
+                          <span><strong>Skenario dengan modal cukup ({fmtRpShort(v3Meta.working_capital.workingCapitalNeeded)}):</strong> omzet ~{fmtRpShort(eco.estimated_monthly_revenue)}/bulan, laba potensial ~{fmtRpShort(Math.round((eco.estimated_monthly_revenue || 0) * v3Meta.profit_benchmark.benchmarkNetMargin))}/bulan.</span>
                         </p>
                       </div>
                     )}
@@ -802,13 +804,13 @@ export function EconomicPotentialTab({
                         <span>-{fmtRpShort(v3Meta.profit_benchmark.monthlyOpex)}</span>
                       </div>
                       {v3Meta?.opex_info && v3Meta.opex_info.source !== 'user' && (
-                        <p className="text-[10px] text-muted-foreground italic pl-4 -mt-1">
-                          ℹ️ Biaya operasional menggunakan estimasi sesuai kategori usaha. Isi di wizard untuk estimasi yang lebih akurat.
+                        <p className="text-[10px] text-muted-foreground italic pl-4 -mt-1 flex items-start gap-1">
+                          <Info className="h-2.5 w-2.5 mt-0.5 shrink-0" /> Biaya operasional menggunakan estimasi sesuai kategori usaha. Isi di wizard untuk estimasi yang lebih akurat.
                         </p>
                       )}
                       {v3Meta?.working_capital && !v3Meta.working_capital.isCapitalAdequate && (
-                        <p className="text-[10px] text-amber-600 dark:text-amber-500 italic pl-4 -mt-1">
-                          ⚠️ Biaya operasional tetap (sewa, gaji, dll) tidak ikut menyusut walau Anda hanya layani {fmt(v3Meta.working_capital.affordableCustomersPerDay)} porsi/hari → inilah yang membuat laba jadi rugi. Bukan karena pasar buruk, tapi karena omzet terbatasi modal sementara biaya tetap jalan.
+                        <p className="text-[10px] text-amber-600 dark:text-amber-500 italic pl-4 -mt-1 flex items-start gap-1">
+                          <AlertTriangle className="h-2.5 w-2.5 mt-0.5 shrink-0" /> Biaya operasional tetap (sewa, gaji, dll) tidak ikut menyusut walau Anda hanya layani {fmt(v3Meta.working_capital.affordableCustomersPerDay)} porsi/hari → inilah yang membuat laba jadi rugi. Bukan karena pasar buruk, tapi karena omzet terbatasi modal sementara biaya tetap jalan.
                         </p>
                       )}
                       {(() => {
@@ -888,8 +890,12 @@ export function EconomicPotentialTab({
                                 <div className={`h-full rounded-full ${(eco.bep_days || 999) <= 365 ? 'bg-green-500' : 'bg-red-500'}`}
                                   style={{ width: `${Math.min(100, (30 / Math.max(1, eco.bep_days || 999)) * 100)}%` }} />
                               </div>
-                              <div className="text-[10px] text-muted-foreground mt-1">
-                                {(eco.bep_days || 999) <= 365 ? '✅ Layak Dijalankan' : (eco.bep_days || 999) <= 730 ? '⚠️ Lama' : '❌ Tidak Layak'}
+                              <div className="text-[10px] text-muted-foreground mt-1 flex items-center gap-1">
+                                {(eco.bep_days || 999) <= 365
+                                  ? <><CheckCircle className="h-2.5 w-2.5 text-green-500" /> Layak Dijalankan</>
+                                  : (eco.bep_days || 999) <= 730
+                                  ? <><AlertTriangle className="h-2.5 w-2.5 text-amber-500" /> Lama</>
+                                  : <><XCircle className="h-2.5 w-2.5 text-red-500" /> Tidak Layak</>}
                               </div>
                             </>
                           )}
@@ -939,8 +945,9 @@ export function EconomicPotentialTab({
                         </div>
                       ) : (
                         <div className="rounded-lg border border-amber-300 bg-amber-50 dark:border-amber-700 dark:bg-amber-950/30 p-3">
-                          <p className="text-xs text-amber-800 dark:text-amber-300">
-                            ⚠️ Modal Anda (<strong>{fmtRpShort(modalUser)}</strong>) di bawah benchmark minimum <strong>Rp {(benchmark.capex_min/1_000_000).toFixed(0)} juta</strong> untuk skala {v3Meta?.business_scale}.
+                          <p className="text-xs text-amber-800 dark:text-amber-300 flex items-start gap-1.5">
+                            <AlertTriangle className="h-3.5 w-3.5 mt-0.5 shrink-0" />
+                            <span>Modal Anda (<strong>{fmtRpShort(modalUser)}</strong>) di bawah benchmark minimum <strong>Rp {(benchmark.capex_min/1_000_000).toFixed(0)} juta</strong> untuk skala {v3Meta?.business_scale}.</span>
                           </p>
                           <p className="text-xs text-amber-700 dark:text-amber-400 mt-1">
                             Pertimbangkan skala lebih kecil (rumahan/gerobak) atau tambah modal. Berikut estimasi jika modal Anda cukup:
@@ -1003,8 +1010,8 @@ export function EconomicPotentialTab({
                       )}
 
                       {modalUser === 0 && (
-                        <p className="text-[11px] text-muted-foreground italic">
-                          💡 Isi "Modal Awal" di wizard untuk perhitungan yang sesuai kondisi Anda.
+                        <p className="text-[11px] text-muted-foreground italic flex items-start gap-1">
+                          <Lightbulb className="h-3 w-3 mt-0.5 shrink-0" /> Isi "Modal Awal" di wizard untuk perhitungan yang sesuai kondisi Anda.
                         </p>
                       )}
                     </div>
@@ -1080,15 +1087,15 @@ export function BusinessDecisionTab({
       {features.show_breakdown ? (
         <div className="grid gap-4 md:grid-cols-3">
           <div className="rounded-xl border-l-4 border-l-green-500 bg-card p-5">
-            <h4 className="text-xs font-semibold uppercase text-green-500 mb-2">💪 Kekuatan</h4>
+            <h4 className="text-xs font-semibold uppercase text-green-500 mb-2 flex items-center gap-1.5"><Zap className="h-3.5 w-3.5" /> Kekuatan</h4>
             <p className="text-sm">{dec.insight_strength || "-"}</p>
           </div>
           <div className="rounded-xl border-l-4 border-l-red-500 bg-card p-5">
-            <h4 className="text-xs font-semibold uppercase text-red-500 mb-2">⚡ Tantangan</h4>
+            <h4 className="text-xs font-semibold uppercase text-red-500 mb-2 flex items-center gap-1.5"><AlertTriangle className="h-3.5 w-3.5" /> Tantangan</h4>
             <p className="text-sm">{dec.insight_weakness || "-"}</p>
           </div>
           <div className="rounded-xl border-l-4 border-l-blue-500 bg-card p-5">
-            <h4 className="text-xs font-semibold uppercase text-blue-500 mb-2">🎯 Rekomendasi</h4>
+            <h4 className="text-xs font-semibold uppercase text-blue-500 mb-2 flex items-center gap-1.5"><Target className="h-3.5 w-3.5" /> Rekomendasi</h4>
             <p className="text-sm">{dec.insight_recommendation || "-"}</p>
           </div>
         </div>
@@ -1100,7 +1107,7 @@ export function BusinessDecisionTab({
       {dec.tradeoff_label && (
         (features.insight_level === 'detailed' || features.insight_level === 'full') ? (
           <div className="rounded-xl border bg-card p-5">
-            <h3 className="mb-3 font-semibold">📊 Analisis Untung-Rugi</h3>
+            <h3 className="mb-3 font-semibold flex items-center gap-2"><BarChart3 className="h-4 w-4" /> Analisis Untung-Rugi</h3>
             <div className="rounded-lg border border-accent/30 bg-accent/5 p-4">
               <div className="font-semibold text-accent">{dec.tradeoff_label}</div>
               <p className="text-sm text-muted-foreground mt-1">{dec.tradeoff_detail}</p>
@@ -1114,13 +1121,13 @@ export function BusinessDecisionTab({
       {/* Basic+: Market Score breakdown */}
       {features.show_breakdown ? (
         <div className="rounded-xl border bg-card p-5">
-          <h3 className="mb-4 font-semibold">📈 Detail Skor Potensi Pasar</h3>
+          <h3 className="mb-4 font-semibold flex items-center gap-2"><LineChart className="h-4 w-4" /> Detail Skor Potensi Pasar</h3>
           <div className="space-y-3">
-            <MetricBar label="Populasi (30%)" score={dec.population_score} icon="👥" />
-            <MetricBar label="Lalu Lintas (25%)" score={dec.traffic_score} icon="🚗" />
-            <MetricBar label="Daya Beli (15%)" score={dec.income_score} icon="💰" />
-            <MetricBar label="Celah Kompetitor (15%)" score={dec.competitor_gap_score} icon="🏪" />
-            <MetricBar label="Kepadatan Penduduk (15%)" score={dec.density_score} icon="🏘️" />
+            <MetricBar label="Populasi (30%)" score={dec.population_score} icon={Users} />
+            <MetricBar label="Lalu Lintas (25%)" score={dec.traffic_score} icon={Car} />
+            <MetricBar label="Daya Beli (15%)" score={dec.income_score} icon={DollarSign} />
+            <MetricBar label="Celah Kompetitor (15%)" score={dec.competitor_gap_score} icon={Store} />
+            <MetricBar label="Kepadatan Penduduk (15%)" score={dec.density_score} icon={Building2} />
           </div>
         </div>
       ) : null}

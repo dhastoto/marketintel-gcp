@@ -4,7 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Search, Database, Lightbulb, ChevronLeft, ChevronRight, Filter } from "lucide-react";
+import { Search, Database, Lightbulb, ChevronLeft, ChevronRight, Filter, BarChart3 } from "lucide-react";
 import { toast } from "sonner";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
@@ -124,7 +124,7 @@ const AdminFoodIntelData = () => {
 
   return (
     <div className="space-y-8">
-      <h1 className="text-2xl font-bold">📊 Kelola Data FoodIntel</h1>
+      <h1 className="text-2xl font-bold flex items-center gap-2"><BarChart3 className="h-6 w-6" /> Kelola Data FoodIntel</h1>
 
       {/* Section A: BPS Data Stats */}
       <div className="rounded-xl border bg-card p-6">
