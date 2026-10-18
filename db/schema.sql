@@ -421,3 +421,38 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON
   population_data, bps_food_data, bps_national_averages,
   engine_parameters, food_business_ideas, commodity_prices
 TO marketintel_app;
+
+-- ============================================================
+-- RPC FUNCTIONS the frontend calls via supabase.rpc(...)
+-- ============================================================
+
+-- GCP demo build: credit/package gating is intentionally out of scope.
+-- The frontend still calls this RPC and throws if it errors, so provide
+-- a harmless no-op instead of enforcing/decrementing anything.
+CREATE OR REPLACE FUNCTION deduct_credits(p_user_id UUID, p_amount INT)
+RETURNS VOID AS $$
+BEGIN
+  -- no-op: credit enforcement is out of scope for this deployment
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+GRANT EXECUTE ON FUNCTION deduct_credits(UUID, INT) TO marketintel_app;
+
+-- Used by the admin FoodIntel data page to build filter dropdowns.
+-- col_name is restricted to a fixed allowlist since it's interpolated
+-- into dynamic SQL (identifiers can't be bound as query parameters).
+CREATE OR REPLACE FUNCTION bps_distinct_values(col_name TEXT)
+RETURNS TEXT[] AS $$
+DECLARE
+  result TEXT[];
+BEGIN
+  IF col_name NOT IN ('kabupaten_kota', 'kelompok', 'metric_type') THEN
+    RAISE EXCEPTION 'Unsupported column: %', col_name;
+  END IF;
+  EXECUTE format('SELECT array_agg(DISTINCT %I ORDER BY %I) FROM bps_food_data WHERE %I IS NOT NULL', col_name, col_name, col_name)
+    INTO result;
+  RETURN result;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER STABLE;
+
+GRANT EXECUTE ON FUNCTION bps_distinct_values(TEXT) TO marketintel_app;
